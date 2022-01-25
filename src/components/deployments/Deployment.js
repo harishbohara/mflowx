@@ -83,10 +83,10 @@ export default({deployment}) => {
                         List of all avaliable deployments for this model! 
                     </Alert>                
                     <Grid container>
-                        <Grid xs={10}>
+                        <Grid  item xs={10}>
                             <Chip label={deployment.data.label} />
                         </Grid>
-                        <Grid xs={2}>
+                        <Grid item  xs={2}>
                             <LoadingButton
                                     color="secondary"
                                     onClick={handleClick}
