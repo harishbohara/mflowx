@@ -12,6 +12,8 @@ import { Stack } from "@mui/material";
 import { Grid, Slider, Chip } from "@mui/material";
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
+import { Snackbar } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
 // This is a specific version of a deployment
@@ -21,8 +23,9 @@ function Version({version}) {
 
     // Do something when 
     useEffect(() => {
-        // console.log("Rollout value changed: rollout=" + rollout + " version=" + version.id)
-    }, [rollout, version]);
+        version.rollout = rollout
+        version.enabled = enabled
+    }, [rollout, version, enabled]);
 
     const handleChange = (event) => {
         setEnabled(event.target.checked);
@@ -76,16 +79,33 @@ function SingleDeployment({deployment}) {
 // A deployment object which lists all the versions avaliable in the deployment
 export default({deployment}) => {
     const [loading, setLoading] = React.useState(false);
+    const [error, setError] = React.useState({err: false, rollout: 0})
     
     function handleClick() {
-        setLoading(true);
-        console.log(deployment)
+        
+        // Disable any error log first
+        setError({err: false, rollout: 0})                
+
+        var total = 0;
+        for (var i = 0; i < deployment.data.versions.length; i++ ) {
+            var version = deployment.data.versions[i]
+            console.log(version)    
+            if (version.enabled && version.rollout > 0) {
+                total = total +  version.rollout;
+            }
+        }
+        console.log("Total is " + total)
+        if (total !== 100) {
+            setError({err: true, rollout: total})                
+        } else {
+            setLoading(true);                
+        }        
     }
 
     return (
         <>            
-            {deployment != null &&
-                <Stack container spacing={2} >
+            {deployment != null &&         
+                <Stack container spacing={2} >                         
                     <Alert icon={false} severity="success">
                         List of all avaliable deployments for this model! 
                     </Alert>                
@@ -112,11 +132,27 @@ export default({deployment}) => {
                     </Stack>
                 </Stack>                    
             }
-             {deployment == null &&
+            
+            {deployment == null &&
                 <h2>
                     <Alert severity="info">Please select a deployment from left menu!</Alert>
                 </h2>
             }
+            
+            <Dialog open={error.err} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+                <DialogTitle id="alert-dialog-title">
+                    {"Deployment Error?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                    Total rollut percentage must be 100, but current total is {error.rollout}. Please make sure 
+                    that the total value of rollout from enabled versions is 100.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button autoFocus onClick={() => setError({err: false, rollout: error.rollout}) }>Ok!</Button>
+                </DialogActions>
+            </Dialog>
         </>
     )
 }
