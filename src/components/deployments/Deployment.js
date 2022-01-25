@@ -10,11 +10,16 @@ import { Box } from "@mui/system";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Stack } from "@mui/material";
 import { Grid, Slider, Chip } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
 // This is a specific version of a deployment
 function Version({version}) {
     const [rollout, setRollout] = useState(version.rollout)
+
+    
+
 
     // Do something when 
     useEffect(() => {
@@ -63,14 +68,38 @@ function SingleDeployment({deployment}) {
 
 // A deployment object which lists all the versions avaliable in the deployment
 export default({deployment}) => {
+    const [loading, setLoading] = React.useState(false);
+    
+    function handleClick() {
+        setLoading(true);
+        console.log(deployment)
+    }
+
     return (
         <>            
             {deployment != null &&
                 <Stack container spacing={2} >
                     <Alert icon={false} severity="success">
                         List of all avaliable deployments for this model! 
-                    </Alert>
-                    <Chip label={deployment.data.label} />
+                    </Alert>                
+                    <Grid container>
+                        <Grid xs={10}>
+                            <Chip label={deployment.data.label} />
+                        </Grid>
+                        <Grid xs={2}>
+                            <LoadingButton
+                                    color="secondary"
+                                    onClick={handleClick}
+                                    loading={loading}
+                                    loadingPosition="start"
+                                    startIcon={<SaveIcon />}
+                                    variant="contained"
+                                    style={{ float: 'right'}}
+                                >
+                                    Save
+                                </LoadingButton>
+                        </Grid>
+                    </Grid>                    
                     <Stack spacing={8}>
                         <SingleDeployment deployment={deployment}/>
                     </Stack>
