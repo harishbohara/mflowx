@@ -86,6 +86,7 @@ export default({deployment}) => {
         // Disable any error log first
         setError({err: false, rollout: 0})                
 
+        // Calculate total rollout values for all versions
         var total = 0;
         for (var i = 0; i < deployment.data.versions.length; i++ ) {
             var version = deployment.data.versions[i]
@@ -94,9 +95,12 @@ export default({deployment}) => {
             }
         }
 
+        // If total is != 100 then something is wrong
         if (total !== 100) {
             setError({err: true, rollout: total})                
         } else {
+            console.log("Apply this deployment settings...")
+            console.log(deployment)
             setLoading(true);                
         }        
     }
