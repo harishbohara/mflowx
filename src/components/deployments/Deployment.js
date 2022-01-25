@@ -17,28 +17,35 @@ const lightTheme = createTheme({ palette: { mode: 'light' } });
 // This is a specific version of a deployment
 function Version({version}) {
     const [rollout, setRollout] = useState(version.rollout)
-
-    
-
+    const [enabled, setEnabled] = useState(true)
 
     // Do something when 
     useEffect(() => {
         // console.log("Rollout value changed: rollout=" + rollout + " version=" + version.id)
     }, [rollout, version]);
 
+    const handleChange = (event) => {
+        setEnabled(event.target.checked);
+    };
+
     return (
         <div key={version.id}>
             <ThemeProvider theme={lightTheme}>
                 <Box key={version.id} sx={{ width: '100%', minWidth: 200, bgcolor: 'background.paper' }}>    
                     <Card>
-                        <CardHeader title={"Version = " + version.title}/>     
+                        <CardHeader title={"Version = " + version.title} style={{backgroundColor: !enabled ? "#E7EAEF" : "#9BF8C6"}}/>     
                         <Divider />
                         <CardContent>
                             <Grid container spacing={2} >
                                 <Grid item xs={3}>URL</Grid>
                                 <Grid item xs={9}><a href="#">{version.url}</a></Grid>                      
                                 <Grid item xs={3}>Enabled</Grid>
-                                <Grid item xs={9}><Switch></Switch></Grid>
+                                <Grid item xs={9}>
+                                    <Switch 
+                                        checked={enabled} 
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
                                 <Grid item xs={3}>Rollout ({rollout})</Grid>
                                 <Grid item xs={9}>
                                     <Slider key={version.id} 
