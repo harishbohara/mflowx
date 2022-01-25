@@ -10,7 +10,7 @@ import Deployment from "./Deployment"
 const elements = [
     {
       id: '1',
-      data: { label: 'Login Model', link: "/login/model", versions: [{id: '1', title: "First version", url: "https://mui.com/components/switches/"}, {id: '2', title: "2"}] },
+      data: { label: 'Login Model', link: "/login/model", versions: [{id: '1', title: "First version", url: "https://mui.com/components/switches/", rollout: 1}, {id: '2', title: "2", rollout: 10}] },
     },
     {
       id: '2',
@@ -38,7 +38,7 @@ export default() => {
         <Container>
             <Row>
                 <Col xs={3}><DeploymentList deployments={deployments} setDeployment={setDeployment}></DeploymentList></Col>
-                <Col xs={6}><Deployment deployment={deployment}></Deployment></Col>
+                <Col xs={9}><Deployment deployment={deployment}></Deployment></Col>
             </Row>      
         </Container>
     )

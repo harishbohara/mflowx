@@ -1,4 +1,5 @@
-import { Container } from 'react-bootstrap';
+
+import { Container } from '@mui/material';
 import { Nav } from 'react-bootstrap';
 import { Navbar } from 'react-bootstrap';
 import Deployment from '../deployments/Deployments';
@@ -6,7 +7,7 @@ import Deployment from '../deployments/Deployments';
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
     return (
-        <>
+    <>
         <Navbar bg="primary" variant="dark">
             <Container fluid>
                 <Navbar.Brand href="#home">MfFlowX</Navbar.Brand>
@@ -20,6 +21,6 @@ export default () => {
         <Container fluid>
             <Deployment></Deployment>
         </Container>
-        </>
+    </>
   )
 }
