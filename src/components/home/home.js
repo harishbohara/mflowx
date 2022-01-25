@@ -9,11 +9,13 @@ export default () => {
         <>
             <Navbar bg="primary" variant="dark">
                 <Container fluid>
-                    <Navbar.Brand href="#home">MfFlowX</Navbar.Brand>
+                    <Navbar.Brand href="#home">MlFlowX</Navbar.Brand>
                         <Nav className="me-auto">
                         <Nav.Link href="#deployments">Deployments</Nav.Link>
+                        {/*
                         <Nav.Link href="#models">Models</Nav.Link>
                         <Nav.Link href="#help">Help</Nav.Link>                   
+                        */}
                     </Nav>
                 </Container>            
             </Navbar>
