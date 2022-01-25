@@ -10,19 +10,19 @@ import Deployment from "./Deployment"
 const elements = [
     {
       id: '1',
-      data: { label: 'Login Model', link: "/login/model" },
+      data: { label: 'Login Model', link: "/login/model", versions: [{id: '1', title: "First version"}, {id: '2', title: "2"}] },
     },
     {
       id: '2',
-      data: { label: 'Logout Model', link: "/loginout/model" },
+      data: { label: 'Logout Model', link: "/loginout/model" , versions: [{id: '1', title: "Second Version"}, {id: '2', title: "2"}] },
     },
     {
       id: '3',
-      data: { label: 'Payment Model', link: "/payment/model" },
+      data: { label: 'Payment Model', link: "/payment/model" , versions: [{id: '1', title: "Third version"}, {id: '2', title: "2"}] },
     },
     {
       id: '4',
-      data: { label: 'Bad Model', link: "/payment/model" },
+      data: { label: 'Bad Model', link: "/payment/model" , versions: [{id: '1', title: "1"}, {id: '2', title: "2"}] },
     },    
   ];
 
