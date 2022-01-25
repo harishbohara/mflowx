@@ -32,10 +32,10 @@ export default() => {
     const [deployments] = useState(elements);
 
     // This is the deployment which will be shown
-    const [deployment, setDeployment] = useState(null);
+    const [deployment, setDeployment] = useState(elements[0]);
 
     return(
-        <Container>
+        <Container>        
             <Row>
                 <Col xs={3}><DeploymentList deployments={deployments} setDeployment={setDeployment}></DeploymentList></Col>
                 <Col xs={9}><Deployment deployment={deployment}></Deployment></Col>
