@@ -9,7 +9,7 @@ import Divider from '@mui/material/Divider';
 import { Box } from "@mui/system";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Stack } from "@mui/material";
-import { Grid, Slider } from "@mui/material";
+import { Grid, Slider, Chip } from "@mui/material";
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
 // This is a specific version of a deployment
@@ -66,14 +66,15 @@ export default({deployment}) => {
     return (
         <>            
             {deployment != null &&
-                <Grid container spacing={2} >
-                    <Grid xs={12}><Alert icon={false} severity="success">List of all avaliable deployments for this model!</Alert></Grid>
-                    <Grid xs={12}>
-                        <Stack spacing={8}>
-                            <SingleDeployment deployment={deployment}/>
-                        </Stack>
-                    </Grid>
-                </Grid>                    
+                <Stack container spacing={2} >
+                    <Alert icon={false} severity="success">
+                        List of all avaliable deployments for this model! 
+                    </Alert>
+                    <Chip label={deployment.data.label} />
+                    <Stack spacing={8}>
+                        <SingleDeployment deployment={deployment}/>
+                    </Stack>
+                </Stack>                    
             }
              {deployment == null &&
                 <h2>
