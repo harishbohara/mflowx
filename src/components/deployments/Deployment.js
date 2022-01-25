@@ -16,8 +16,8 @@ function Version({version}) {
     const [rollout, setRollout] = useState(version.rollout)
 
     useEffect(() => {
-        console.log("Rollout value changed " + rollout)
-    }, [rollout]);
+        console.log("Rollout value changed: rollout=" + rollout + " version=" + version.id)
+    }, [rollout, version]);
 
     return (
         <div key={version.id}>
@@ -33,7 +33,7 @@ function Version({version}) {
                             <Grid item xs={3}>Enabled</Grid>
                             <Grid item xs={9}><Switch></Switch></Grid>
                             <Grid item xs={3}>Rollout ({rollout})</Grid>
-                            <Grid item xs={9}><Slider defaultValue={rollout} step={1} marks min={0} max={100} onChange={(ev) => setRollout(ev.target.value)}/></Grid>
+                            <Grid item xs={9}><Slider key={version.id} value={rollout} step={1} marks min={0} max={100} onChange={(ev) => setRollout(ev.target.value)}/></Grid>
                         </Grid>                                                    
                         </CardContent>
                     </Card>            
