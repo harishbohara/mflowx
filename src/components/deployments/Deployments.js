@@ -10,7 +10,7 @@ import Deployment from "./Deployment"
 const elements = [
     {
       id: '1',
-      data: { label: 'Login Model', link: "/login/model", versions: [{id: '1', title: "First version"}, {id: '2', title: "2"}] },
+      data: { label: 'Login Model', link: "/login/model", versions: [{id: '1', title: "First version", url: "https://mui.com/components/switches/"}, {id: '2', title: "2"}] },
     },
     {
       id: '2',
