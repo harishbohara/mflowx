@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Nav } from 'react-bootstrap';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
 
 const elements = [
     {
@@ -16,20 +19,33 @@ const elements = [
     },    
   ];
 
+  const style = {
+    width: '100%',
+    maxWidth: 360,
+    bgcolor: 'background.paper',
+  };
   
 // eslint-disable-next-line import/no-anonymous-default-export
 export default() => {
+
+    // These are the deployments - TODO (get if from outside)
     const [deployments] = useState(elements);
 
-    const listItems = deployments.map((deployment) =>
-        <Nav.Link key={deployment.id} href={deployment.data.link}>{deployment.data.label}</Nav.Link>              
+    // Add all models in left menu
+    const menuItems = deployments.map((deployment) =>
+        <>
+         <ListItem button>
+            <ListItemText primary={deployment.data.label} />
+            </ListItem>
+            <Divider />
+        </>
     );
 
     return(
-       <div style={{border: "4px dotted blue"}}>
-            <ul>
-            {listItems}               
-          </ul>
+       <div>
+           <List sx={style} component="nav" aria-label="mailbox folders">
+                {menuItems}   
+            </List>   
        </div>
     )
 }
