@@ -19,11 +19,9 @@ const elements = [
     },    
   ];
 
-  const style = {
-    width: '100%',
-    maxWidth: 360,
-    bgcolor: 'background.paper',
-  };
+
+// Left menu style
+const style = {width: '100%',maxWidth: 360,bgcolor: 'background.paper',};
   
 // eslint-disable-next-line import/no-anonymous-default-export
 export default() => {
@@ -41,6 +39,7 @@ export default() => {
         </>
     );
 
+    // Final component
     return(
        <div>
            <List sx={style} component="nav" aria-label="mailbox folders">
