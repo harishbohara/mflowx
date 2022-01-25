@@ -89,12 +89,11 @@ export default({deployment}) => {
         var total = 0;
         for (var i = 0; i < deployment.data.versions.length; i++ ) {
             var version = deployment.data.versions[i]
-            console.log(version)    
             if (version.enabled && version.rollout > 0) {
                 total = total +  version.rollout;
             }
         }
-        console.log("Total is " + total)
+
         if (total !== 100) {
             setError({err: true, rollout: total})                
         } else {
@@ -138,7 +137,7 @@ export default({deployment}) => {
                     <Alert severity="info">Please select a deployment from left menu!</Alert>
                 </h2>
             }
-            
+
             <Dialog open={error.err} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
                 <DialogTitle id="alert-dialog-title">
                     {"Deployment Error?"}
