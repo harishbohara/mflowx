@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable import/no-anonymous-default-export */
 
@@ -12,19 +13,23 @@ import { Stack } from "@mui/material";
 import { Grid, Slider, Chip } from "@mui/material";
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
-import { Snackbar } from '@mui/material';
+import { updateDeployment } from './deploymentsReducer';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { store } from '../home/home'
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
 // This is a specific version of a deployment
-function Version({version}) {
+function Version({ version, deploymentId }) {
     const [rollout, setRollout] = useState(version.rollout)
     const [enabled, setEnabled] = useState(true)
+    const dispatch = useDispatch()
 
     // Do something when 
     useEffect(() => {
-        version.rollout = rollout
-        version.enabled = enabled
+        // version.rollout = rollout
+        // version.enabled = enabled
+        dispatch(updateDeployment({ rollout: rollout, enabled: enabled, deploymentId: deploymentId, versionId: version.id }))
     }, [rollout, version, enabled]);
 
     const handleChange = (event) => {
@@ -34,34 +39,34 @@ function Version({version}) {
     return (
         <div key={version.id}>
             <ThemeProvider theme={lightTheme}>
-                <Box key={version.id} sx={{ width: '100%', minWidth: 200, bgcolor: 'background.paper' }}>    
+                <Box key={version.id} sx={{ width: '100%', minWidth: 200, bgcolor: 'background.paper' }}>
                     <Card>
-                        <CardHeader title={"Version = " + version.title} style={{backgroundColor: !enabled ? "#E7EAEF" : "#9BF8C6"}}/>     
+                        <CardHeader title={"Version = " + version.title} style={{ backgroundColor: !enabled ? "#E7EAEF" : "#9BF8C6" }} />
                         <Divider />
                         <CardContent>
                             <Grid container spacing={2} >
                                 <Grid item xs={3}>URL</Grid>
-                                <Grid item xs={9}><a href="#">{version.url}</a></Grid>                      
+                                <Grid item xs={9}><a href="#">{version.url}</a></Grid>
                                 <Grid item xs={3}>Enabled</Grid>
                                 <Grid item xs={9}>
-                                    <Switch 
-                                        checked={enabled} 
+                                    <Switch
+                                        checked={enabled}
                                         onChange={handleChange}
                                     />
                                 </Grid>
                                 <Grid item xs={3}>Rollout ({rollout})</Grid>
                                 <Grid item xs={9}>
-                                    <Slider key={version.id} 
-                                        value={rollout} 
-                                        step={1} marks 
-                                        min={0} 
-                                        max={100} 
+                                    <Slider key={version.id}
+                                        value={rollout}
+                                        step={1} marks
+                                        min={0}
+                                        max={100}
                                         onChange={(ev) => setRollout(ev.target.value)}
                                     />
                                 </Grid>
-                            </Grid>                                                    
+                            </Grid>
                         </CardContent>
-                    </Card>            
+                    </Card>
                 </Box>
             </ThemeProvider>
         </div>
@@ -69,73 +74,79 @@ function Version({version}) {
 }
 
 // A single card to show a single version of a deployment
-function SingleDeployment({deployment}) {
+function SingleDeployment({ deployment }) {
     const cards = deployment.data.versions.map((version) =>
-        <Version key={version.id} version={version}></Version>
+        <Version key={version.id} version={version} deploymentId={deployment.id}></Version>
     );
     return (<>{cards}</>)
 }
 
 // A deployment object which lists all the versions avaliable in the deployment
-export default({deployment}) => {
+export default () => {
+    const deploymentIndex = useSelector(state => state.index)
     const [loading, setLoading] = React.useState(false);
-    const [error, setError] = React.useState({err: false, rollout: 0})
-    
+    const [error, setError] = React.useState({ err: false, rollout: 0 })
+    const deployment = useSelector(state => state.deployment)
+    const elements = useSelector(state => state.elements)
+
     function handleClick() {
-        
+
         // Disable any error log first
-        setError({err: false, rollout: 0})                
+        setError({ err: false, rollout: 0 })
+
+        // Get the latest deployment data -> the global var will not be updated
+        const deployment = elements[deploymentIndex]
 
         // Calculate total rollout values for all versions
         var total = 0;
-        for (var i = 0; i < deployment.data.versions.length; i++ ) {
+        for (var i = 0; i < deployment.data.versions.length; i++) {
             var version = deployment.data.versions[i]
             if (version.enabled && version.rollout > 0) {
-                total = total +  version.rollout;
+                total = total + version.rollout;
             }
         }
 
         // If total is != 100 then something is wrong
         if (total !== 100) {
-            setError({err: true, rollout: total})                
+            setError({ err: true, rollout: total })
         } else {
             console.log("Apply this deployment settings...")
             console.log(deployment)
-            setLoading(true);                
-        }        
+            setLoading(true);
+        }
     }
 
     return (
-        <>            
-            {deployment != null &&         
-                <Stack container spacing={2} >                         
+        <>
+            {deployment != null &&
+                <Stack container spacing={2} >
                     <Alert icon={false} severity="success">
-                        List of all avaliable deployments for this model! 
-                    </Alert>                
+                        List of all avaliable deployments for this model!
+                    </Alert>
                     <Grid container>
-                        <Grid  item xs={10}>
+                        <Grid item xs={10}>
                             <Chip label={deployment.data.label} />
                         </Grid>
-                        <Grid item  xs={2}>
+                        <Grid item xs={2}>
                             <LoadingButton
-                                    color="secondary"
-                                    onClick={handleClick}
-                                    loading={loading}
-                                    loadingPosition="start"
-                                    startIcon={<SaveIcon />}
-                                    variant="contained"
-                                    style={{ float: 'right'}}
-                                >
-                                    Save
-                                </LoadingButton>
+                                color="secondary"
+                                onClick={handleClick}
+                                loading={loading}
+                                loadingPosition="start"
+                                startIcon={<SaveIcon />}
+                                variant="contained"
+                                style={{ float: 'right' }}
+                            >
+                                Save
+                            </LoadingButton>
                         </Grid>
-                    </Grid>                    
+                    </Grid>
                     <Stack spacing={8}>
-                        <SingleDeployment deployment={deployment}/>
+                        <SingleDeployment deployment={deployment} />
                     </Stack>
-                </Stack>                    
+                </Stack>
             }
-            
+
             {deployment == null &&
                 <h2>
                     <Alert severity="info">Please select a deployment from left menu!</Alert>
@@ -148,12 +159,12 @@ export default({deployment}) => {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                    Total rollut percentage must be 100, but current total is {error.rollout}. Please make sure 
-                    that the total value of rollout from enabled versions is 100.
+                        Total rollut percentage must be 100, but current total is {error.rollout}. Please make sure
+                        that the total value of rollout from enabled versions is 100.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={() => setError({err: false, rollout: error.rollout}) }>Ok!</Button>
+                    <Button autoFocus onClick={() => setError({ err: false, rollout: error.rollout })}>Ok!</Button>
                 </DialogActions>
             </Dialog>
         </>
