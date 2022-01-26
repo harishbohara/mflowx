@@ -1,9 +1,9 @@
 /* eslint-disable import/no-anonymous-default-export */
+import SaveIcon from '@mui/icons-material/Save';
 import { LoadingButton } from '@mui/lab';
 import { Alert, Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Stack } from '@mui/material';
 import React from 'react';
 import Version from './Version';
-import SaveIcon from '@mui/icons-material/Save';
 
 // A single card to show a single version of a deployment
 function InternalDeployments({ deployment }) {
