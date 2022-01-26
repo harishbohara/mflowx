@@ -46,6 +46,7 @@ export const deploymentsSlice = createSlice(
             },
 
             updateDeployment: (state, action) => {
+                console.log(action.payload)
                 state.version = state.version + 1
                 const payload = action.payload
                 for (var i = 0; i < state.elements.length; i++) {

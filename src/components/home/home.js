@@ -1,36 +1,12 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { Container } from 'react-bootstrap';
-import { Nav } from 'react-bootstrap';
-import { Navbar } from 'react-bootstrap';
-import { Provider } from 'react-redux';
-import Deployment from '../deployments/Deployments';
-import { deploymentsSlice } from '../deployments/deploymentsReducer';
-
-export const store = configureStore({
-    reducer: deploymentsSlice.reducer
-})
-
+import { Box, Container } from "@mui/material"
+import DeploymentsContainer from "../deployments/v1/DeploymentsContainer"
+import Menu from '../menu/Menu'
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
     return (
-        <>
-            <Navbar bg="primary" variant="dark">
-                <Container fluid>
-                    <Navbar.Brand href="#home">MlFlowX</Navbar.Brand>
-                    <Nav className="me-auto">
-                        <Nav.Link href="#deployments">Deployments</Nav.Link>
-                        {/*
-                        <Nav.Link href="#models">Models</Nav.Link>
-                        <Nav.Link href="#help">Help</Nav.Link>                   
-                        */}
-                    </Nav>
-                </Container>
-            </Navbar>
-            <Provider store={store}>
-                <Container fluid>
-                    <Deployment></Deployment>
-                </Container>
-            </Provider>
-        </>
+        <Box sx={{ width: '80%', minWidth: 800, bgcolor: 'background.paper' }}>
+            <Menu></Menu>
+            <DeploymentsContainer />
+        </Box>
     )
 }

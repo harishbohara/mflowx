@@ -16,7 +16,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import { updateDeployment } from './deploymentsReducer';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { store } from '../home/home'
+
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 
 // This is a specific version of a deployment
@@ -27,9 +27,7 @@ function Version({ version, deploymentId }) {
 
     // Do something when 
     useEffect(() => {
-        // version.rollout = rollout
-        // version.enabled = enabled
-        dispatch(updateDeployment({ rollout: rollout, enabled: enabled, deploymentId: deploymentId, versionId: version.id }))
+        dispatch(updateDeployment({ rollout: rollout, enabled: enabled, deploymentId: deploymentId, versionId: version.id, }))
     }, [rollout, version, enabled]);
 
     const handleChange = (event) => {
@@ -58,7 +56,7 @@ function Version({ version, deploymentId }) {
                                 <Grid item xs={9}>
                                     <Slider key={version.id}
                                         value={rollout}
-                                        step={1} marks
+                                        step={1}
                                         min={0}
                                         max={100}
                                         onChange={(ev) => setRollout(ev.target.value)}
@@ -89,12 +87,14 @@ export default () => {
     const deployment = useSelector(state => state.deployment)
     const elements = useSelector(state => state.elements)
 
+
     function handleClick() {
 
         // Disable any error log first
         setError({ err: false, rollout: 0 })
 
-        // Get the latest deployment data -> the global var will not be updated
+
+        // Get the latest deployment data -> the global var is a 
         const deployment = elements[deploymentIndex]
 
         // Calculate total rollout values for all versions
