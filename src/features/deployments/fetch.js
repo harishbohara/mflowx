@@ -1,5 +1,6 @@
 
 import axios from "axios";
+import { version } from "react";
 import { fetchDataDone, setCurrentDeployment } from "./deploymentsSlice";
 
 export function getRegisteredModels(dispatch) {
@@ -23,8 +24,25 @@ export function getModelVersions(dispatch, name) {
 }
 
 
-export function updateTagsInModelVersion(dispatch, name) {
+export function updateTagsInModelVersion(dispatch, name, versions) {
+    for (var i = 0; i < versions.length; i++) {
+        const ver = versions[i]
+        for (var j = 0; j < ver.length; j++) {
+            var t = ver[j]
+            if (t.modified === false) continue
 
+            const data = {
+                "name": name,
+                "version": t.version,
+                "key": t.key,
+                "value": t.value + "",
+            }
+            console.log(data)
+            axios.post(process.env.REACT_APP_MLFOW_API_SERVER + "/preview/mlflow/model-versions/set-tag", data).then((res) => {
+                console.debug("Modified = " + JSON.stringify(t))
+            })
+        }
+    }
 }
 
 export function isModelVersionEnabled(version) {

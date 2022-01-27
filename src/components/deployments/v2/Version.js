@@ -21,6 +21,7 @@ export default ({ version, tag }) => {
             const t = tag[i]
             if (t.key === "__rollout__") {
                 tag[i].value = rollout
+                tag[i].modified = true;
                 rollloutNotFound = false
             }
         }
@@ -28,15 +29,16 @@ export default ({ version, tag }) => {
             const t = tag[i]
             if (t.key === "__enabled__") {
                 tag[i].value = enabled
+                tag[i].modified = true;
                 enabledNotFound = false
             }
         }
 
         if (rollloutNotFound) {
-            tag.push({ key: "__rollout__", value: rollout, version: version.version, run_id: version.run_id })
+            tag.push({ key: "__rollout__", value: rollout, version: version.version, run_id: version.run_id, modified: true })
         }
         if (enabledNotFound) {
-            tag.push({ key: "__enabled__", value: enabled, version: version.version, run_id: version.run_id })
+            tag.push({ key: "__enabled__", value: enabled, version: version.version, run_id: version.run_id, modified: true })
         }
     }, [rollout, version, enabled]);
 

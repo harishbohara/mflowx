@@ -3,6 +3,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import { LoadingButton } from '@mui/lab';
 import { Alert, Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Stack } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { updateTagsInModelVersion } from '../../../features/deployments/fetch';
 import Version from './Version';
 
 // A single card to show a single version of a deployment
@@ -49,6 +50,8 @@ export default ({ deployment, name }) => {
         } else {
             console.log("Apply this deployment settings...")
             console.log(deployment)
+
+            updateTagsInModelVersion(null, name, tags)
             setLoading(true);
         }
     };
@@ -62,7 +65,7 @@ export default ({ deployment, name }) => {
             var t = []
             for (var j = 0; m.tags != null && m.tags !== undefined && j < m.tags.length; j++) {
                 console.log(m.tags[j])
-                t.push({ key: m.tags[j].key, value: m.tags[j].value, version: m.version, run_id: m.run_id })
+                t.push({ key: m.tags[j].key, value: m.tags[j].value, version: m.version, run_id: m.run_id, modified: false })
             }
             temp.push(t)
         }
