@@ -2,20 +2,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable import/no-anonymous-default-export */
 
-import React, { useState, useEffect } from 'react';
-import { Alert, CardHeader, Switch } from "@mui/material"
-import Card from '@mui/material/Card';
-import { CardContent } from "@mui/material";
-import Divider from '@mui/material/Divider';
-import { Box } from "@mui/system";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Stack } from "@mui/material";
-import { Grid, Slider, Chip } from "@mui/material";
-import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
-import { updateDeployment } from './deploymentsReducer';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Alert, Button, CardContent, CardHeader, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Slider, Stack, Switch } from "@mui/material";
+import Card from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Box } from "@mui/system";
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { updateDeployment } from './deploymentsReducer';
 
 const lightTheme = createTheme({ palette: { mode: 'light' } });
 

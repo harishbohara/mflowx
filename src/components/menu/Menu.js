@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material"
+import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
 
 
 export default () => {

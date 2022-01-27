@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getRegisteredModels } from './fetch';
 import axios from "axios";
+import { useDispatch } from 'react-redux';
 
 const deployments = [
     {
@@ -53,8 +54,6 @@ const deployments = [
     },
 ];
 
-getRegisteredModels()
-
 export const deploymentsSlice = createSlice({
     name: 'deployment',
     initialState: {
@@ -82,10 +81,15 @@ export const deploymentsSlice = createSlice({
         },
 
         fetchData: (state) => {
-            getRegisteredModels()
+            console.log("Called fetchData... NO-OP")
+        },
+
+        fetchDataDone: (state, event) => {
+            console.log("Called fetchDataDone... ")
+            state.deploymentsV1 = event.payload.data
         },
     }
 })
 
-export const { upldateRolloutPercentage, setCurrentDeploymentIndex, fetchData } = deploymentsSlice.actions
+export const { upldateRolloutPercentage, setCurrentDeploymentIndex, fetchData, fetchDataDone } = deploymentsSlice.actions
 export default deploymentsSlice.reducer

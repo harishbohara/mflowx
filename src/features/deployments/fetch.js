@@ -1,9 +1,10 @@
 
 import axios from "axios";
+import { fetchDataDone } from "./deploymentsSlice";
 
-export function getRegisteredModels() {
-    axios.get(process.env.REACT_APP_MLFOW_API_SERVER + "/mlflow/registered-models/list", {}
-    ).then((response) => {
-        console.log(response.data);
-    });
+export function getRegisteredModels(dispatch) {
+    axios.get(process.env.REACT_APP_MLFOW_API_SERVER + "/mlflow/registered-models/list")
+        .then((res) => {
+            dispatch(fetchDataDone({ data: res.data }))
+        })
 }

@@ -1,12 +1,10 @@
 /* eslint-disable import/no-anonymous-default-export */
 
-import React, { useState, useEffect } from 'react';
-import { Container } from "react-bootstrap"
-import { Row } from "react-bootstrap"
-import { Col } from "react-bootstrap"
-import DeploymentList from "./DeploymentList"
-import Deployment from "./Deployment"
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { Col, Container, Row } from "react-bootstrap";
+import { useSelector } from 'react-redux';
+import Deployment from "./Deployment";
+import DeploymentList from "./DeploymentList";
 
 export default () => {
 

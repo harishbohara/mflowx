@@ -2,7 +2,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { Box, Card, CardContent, CardHeader, Grid, Slider, Switch } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { upldateRolloutPercentage } from '../../../features/deployments/deploymentsSlice';
 
 export default ({ version }) => {

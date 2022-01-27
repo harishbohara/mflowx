@@ -1,14 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-anonymous-default-export */
 
+import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setCurrentDeploymentIndex } from '../../../features/deployments/deploymentsSlice';
 
 
-export default ({ deployments }) => {
+export default ({ deployments, deploymentsV1 }) => {
     const dispatch = useDispatch()
+    const [items, setItems] = useState(<div>Hi</div>)
 
     const deploymentItems = deployments.map((deployment) =>
         <div key={deployment.id}>
@@ -19,7 +22,29 @@ export default ({ deployments }) => {
         </div>
     );
 
+    useEffect(() => {
+        if (deploymentsV1 !== undefined) {
+            const allItems = []
+            for (var i = 0; i < deploymentsV1.registered_models.length; i++) {
+                const index = i;
+                const deployment = deploymentsV1.registered_models[index];
+                const item = <div key={deployment.creation_timestamp}>
+                    <ListItem button>
+                        <ListItemText primary={deployment.name} onClick={() => dispatch(setCurrentDeploymentIndex({ index: index }))} />
+                    </ListItem>
+                    <Divider />
+                </div>
+                allItems.push(item)
+            }
+            setItems(allItems)
+        }
+    }, [deploymentsV1])
+
     return (
-        <>{deploymentItems}</>
+        <>
+            {deploymentItems}
+            {items}
+        </>
+
     )
 }
