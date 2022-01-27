@@ -58,7 +58,9 @@ export const deploymentsSlice = createSlice({
     name: 'deployment',
     initialState: {
         index: 0,
-        deployments: deployments
+        deployments: deployments,
+        deployment: null,
+        currentDeploymentName: "",
     },
     reducers: {
         upldateRolloutPercentage: (state, event) => {
@@ -80,6 +82,12 @@ export const deploymentsSlice = createSlice({
             console.log("Called setCurrentDeploymentIndex: payload=" + state.index)
         },
 
+        setCurrentDeployment: (state, event) => {
+            state.deployment = event.payload.deployment
+            state.currentDeploymentName = event.payload.deploymentName;
+            console.log("Called setCurrentDeployment: payload=" + state.index + " deployment=" + JSON.stringify(state.deployment) + " name=" + state.currentDeploymentName)
+        },
+
         fetchData: (state) => {
             console.log("Called fetchData... NO-OP")
         },
@@ -91,5 +99,5 @@ export const deploymentsSlice = createSlice({
     }
 })
 
-export const { upldateRolloutPercentage, setCurrentDeploymentIndex, fetchData, fetchDataDone } = deploymentsSlice.actions
+export const { upldateRolloutPercentage, setCurrentDeploymentIndex, setCurrentDeployment, fetchData, fetchDataDone } = deploymentsSlice.actions
 export default deploymentsSlice.reducer

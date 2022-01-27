@@ -1,11 +1,9 @@
 import { Container } from "@mui/material"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { fetchData, fetchDataDone } from "../../features/deployments/deploymentsSlice"
-import DeploymentsContainer from "../deployments/v1/DeploymentsContainer"
-import Menu from '../menu/Menu'
-import axios from "axios";
 import { getRegisteredModels } from "../../features/deployments/fetch"
+import DeploymentsContainer from "../deployments/v2/DeploymentsContainer"
+import Menu from '../menu/Menu'
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
