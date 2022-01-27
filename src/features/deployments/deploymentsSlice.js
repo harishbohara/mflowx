@@ -1,5 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
-
+import { createSlice } from '@reduxjs/toolkit';
+import { getRegisteredModels } from './fetch';
+import axios from "axios";
 
 const deployments = [
     {
@@ -52,6 +53,8 @@ const deployments = [
     },
 ];
 
+getRegisteredModels()
+
 export const deploymentsSlice = createSlice({
     name: 'deployment',
     initialState: {
@@ -76,9 +79,13 @@ export const deploymentsSlice = createSlice({
         setCurrentDeploymentIndex: (state, event) => {
             state.index = event.payload.index
             console.log("Called setCurrentDeploymentIndex: payload=" + state.index)
-        }
+        },
+
+        fetchData: (state) => {
+            getRegisteredModels()
+        },
     }
 })
 
-export const { upldateRolloutPercentage, setCurrentDeploymentIndex } = deploymentsSlice.actions
+export const { upldateRolloutPercentage, setCurrentDeploymentIndex, fetchData } = deploymentsSlice.actions
 export default deploymentsSlice.reducer
