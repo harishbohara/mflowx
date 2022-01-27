@@ -13,11 +13,9 @@ export default () => {
     const [deployment, setDeployment] = useState(null)
 
     useEffect(() => {
-        try {
-            if (deploymentsV1 !== undefined) {
-                setDeployment(deploymentsV1.registered_models[selectedIndex])
-            }
-        } catch (e) {
+        if (deploymentsV1 !== undefined && selectedIndex < deploymentsV1.registered_models.length) {
+            console.log("DocumentContainer -> Got call to refresh deployment... index=" + selectedIndex)
+            setDeployment(deploymentsV1.registered_models[selectedIndex])
         }
     }, [selectedIndex])
 
