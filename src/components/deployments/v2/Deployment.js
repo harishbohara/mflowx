@@ -56,16 +56,14 @@ export default ({ deployment, name }) => {
 
     useEffect(() => {
         if (deployment === undefined || deployment == null) return
-
         const temp = []
         for (var i = 0; deployment.model_versions != null && i < deployment.model_versions.length; i++) {
             const m = deployment.model_versions[i]
             var t = []
             for (var j = 0; m.tags != null && m.tags !== undefined && j < m.tags.length; j++) {
                 console.log(m.tags[j])
-                t.push({ key: m.tags[j].key, value: m.tags[j].value })
+                t.push({ key: m.tags[j].key, value: m.tags[j].value, version: m.version, run_id: m.run_id })
             }
-            //temp.push(m.tags == null || m.tags === undefined ? [] : m.tags)
             temp.push(t)
         }
         console.log("Deployments saved... " + JSON.stringify(temp))

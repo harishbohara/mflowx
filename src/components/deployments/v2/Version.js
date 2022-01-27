@@ -31,11 +31,12 @@ export default ({ version, tag }) => {
                 enabledNotFound = false
             }
         }
+
         if (rollloutNotFound) {
-            tag.push({ key: "__rollout__", value: rollout })
+            tag.push({ key: "__rollout__", value: rollout, version: version.version, run_id: version.run_id })
         }
         if (enabledNotFound) {
-            tag.push({ key: "__enabled__", value: enabled })
+            tag.push({ key: "__enabled__", value: enabled, version: version.version, run_id: version.run_id })
         }
     }, [rollout, version, enabled]);
 

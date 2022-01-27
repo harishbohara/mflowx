@@ -22,6 +22,11 @@ export function getModelVersions(dispatch, name) {
     })
 }
 
+
+export function updateTagsInModelVersion(dispatch, name) {
+
+}
+
 export function isModelVersionEnabled(version) {
     if (version.tags != null) {
         for (var i = 0; i < version.tags.length; i++) {
