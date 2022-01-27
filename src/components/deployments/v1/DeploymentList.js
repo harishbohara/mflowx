@@ -23,21 +23,19 @@ export default ({ deployments, deploymentsV1 }) => {
     );
 
     useEffect(() => {
-        if (deploymentsV1 !== undefined) {
-            const allItems = []
-            for (var i = 0; i < deploymentsV1.registered_models.length; i++) {
-                const index = i;
-                const deployment = deploymentsV1.registered_models[index];
-                const item = <div key={deployment.creation_timestamp}>
-                    <ListItem button>
-                        <ListItemText primary={deployment.name} onClick={() => dispatch(setCurrentDeploymentIndex({ index: index }))} />
-                    </ListItem>
-                    <Divider />
-                </div>
-                allItems.push(item)
-            }
-            setItems(allItems)
+        const allItems = []
+        for (var i = 0; i < deploymentsV1.registered_models.length; i++) {
+            const index = i;
+            const deployment = deploymentsV1.registered_models[index];
+            const item = <div key={deployment.creation_timestamp}>
+                <ListItem button>
+                    <ListItemText primary={deployment.name} onClick={() => dispatch(setCurrentDeploymentIndex({ index: index }))} />
+                </ListItem>
+                <Divider />
+            </div>
+            allItems.push(item)
         }
+        setItems(allItems)
     }, [deploymentsV1])
 
     return (
