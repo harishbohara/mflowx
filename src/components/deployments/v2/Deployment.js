@@ -20,7 +20,7 @@ export default ({ deployment, name }) => {
     const [tags, setTags] = useState([])
 
     const handleSaveButtonClick = (event) => {
-        setLoading(false)
+        setLoading(true)
         console.log("Deployments saved... " + JSON.stringify(tags))
 
         // Calculate total rollout values for all versions
@@ -47,12 +47,19 @@ export default ({ deployment, name }) => {
         // If total is != 100 then something is wrong
         if (total !== 100) {
             setDeploymentSaveError({ err: true, rollout: total })
+            setTimeout(() => { setLoading(false); }, 1000);
         } else {
             console.log("Apply this deployment settings...")
             console.log(deployment)
 
-            updateTagsInModelVersion(null, name, tags)
-            setLoading(true);
+            updateTagsInModelVersion(null, name, tags, (result) => {
+                console.log(result)
+                if (result.status === "ok") {
+                    setTimeout(() => { setLoading(false); }, 1000);
+                } else {
+                    setLoading(true);
+                }
+            })
         }
     };
 

@@ -47,7 +47,7 @@ export default ({ version, tag }) => {
             <Box key={version.version} sx={{ width: '100%', minWidth: 200, bgcolor: 'background.paper' }}>
                 <Card>
 
-                    <CardHeader title={"Version = " + version.run_id} style={{ backgroundColor: !enabled ? "#E7EAEF" : "#9BF8C6" }} />
+                    <CardHeader title={"Version = " + version.version} style={{ backgroundColor: !enabled ? "#E7EAEF" : "#9BF8C6" }} />
 
                     <CardContent>
                         <Grid container spacing={2} >
