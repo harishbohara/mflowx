@@ -2,13 +2,13 @@
 import SaveIcon from '@mui/icons-material/Save';
 import { LoadingButton } from '@mui/lab';
 import { Alert, Button, Chip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Stack } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Version from './Version';
 
 // A single card to show a single version of a deployment
-function InternalDeployments({ deployment }) {
-    const cards = deployment.model_versions.map((version) =>
-        <Version key={version.version + version.run_id} version={version}></Version>
+function InternalDeployments({ deployment, tags }) {
+    const cards = deployment.model_versions.map((version, index) =>
+        <Version key={version.version + version.run_id} version={version} tag={tags[index]}></Version>
     );
     return (<div>{cards}</div>)
 }
@@ -16,18 +16,30 @@ function InternalDeployments({ deployment }) {
 export default ({ deployment, name }) => {
     const [loading, setLoading] = React.useState(false);
     const [deploymentSaveError, setDeploymentSaveError] = React.useState({ err: false, rollout: 0 })
+    const [tags, setTags] = useState([])
 
     const handleSaveButtonClick = (event) => {
         setLoading(false)
-        console.log("Deployments saved...")
-        console.log(deployment.data.versions)
+        console.log("Deployments saved... " + JSON.stringify(tags))
 
         // Calculate total rollout values for all versions
         var total = 0;
-        for (var i = 0; i < deployment.data.versions.length; i++) {
-            var version = deployment.data.versions[i]
-            if (version.enabled && version.rollout > 0) {
-                total = total + version.rollout;
+        for (var i = 0; i < tags.length; i++) {
+            var tag = tags[i] == null || tags[i] === undefined ? [] : tags[i]
+
+            var isEnabled = false
+            for (var j = 0; j < tag.length; j++) {
+                const t = tag[j]
+                if (t.key === "__enabled__") {
+                    isEnabled = t.value === "true" || t.value === true
+                }
+            }
+
+            for (var j = 0; j < tag.length && isEnabled; j++) {
+                const t = tag[j]
+                if (t.key === "__rollout__") {
+                    total = total + parseInt(t.value);
+                }
             }
         }
 
@@ -40,6 +52,26 @@ export default ({ deployment, name }) => {
             setLoading(true);
         }
     };
+
+
+    useEffect(() => {
+        if (deployment === undefined || deployment == null) return
+
+        const temp = []
+        for (var i = 0; deployment.model_versions != null && i < deployment.model_versions.length; i++) {
+            const m = deployment.model_versions[i]
+            var t = []
+            for (var j = 0; m.tags != null && m.tags !== undefined && j < m.tags.length; j++) {
+                console.log(m.tags[j])
+                t.push({ key: m.tags[j].key, value: m.tags[j].value })
+            }
+            //temp.push(m.tags == null || m.tags === undefined ? [] : m.tags)
+            temp.push(t)
+        }
+        console.log("Deployments saved... " + JSON.stringify(temp))
+        setTags(temp)
+    }, [deployment])
+
 
     return (
         <div>
@@ -63,7 +95,7 @@ export default ({ deployment, name }) => {
                             </Grid>
                         </Grid>
 
-                        <InternalDeployments deployment={deployment} />
+                        <InternalDeployments deployment={deployment} tags={tags} />
                     </Stack>
                 </>
             }

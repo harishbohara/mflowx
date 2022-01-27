@@ -2,21 +2,41 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { Box, Card, CardContent, CardHeader, Grid, Slider, Switch } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { getModelVersionRollout, isModelVersionEnabled } from '../../../features/deployments/fetch';
 
-export default ({ version }) => {
+export default ({ version, tag }) => {
     const [enabled, setEnabled] = useState(isModelVersionEnabled(version))
     const [rollout, setRollout] = useState(getModelVersionRollout(version))
-    const dispatch = useDispatch()
 
     const versionEnableStatusChanged = (event) => {
         setEnabled(event.target.checked);
     };
 
-    // Do something when 
     useEffect(() => {
-        // dispatch(upldateRolloutPercentage({ ...version, rollout, enabled }))
+        if (tag == null) return
+        var rollloutNotFound = true;
+        var enabledNotFound = true;
+
+        for (var i = 0; i < tag.length; i++) {
+            const t = tag[i]
+            if (t.key === "__rollout__") {
+                tag[i].value = rollout
+                rollloutNotFound = false
+            }
+        }
+        for (var i = 0; i < tag.length; i++) {
+            const t = tag[i]
+            if (t.key === "__enabled__") {
+                tag[i].value = enabled
+                enabledNotFound = false
+            }
+        }
+        if (rollloutNotFound) {
+            tag.push({ key: "__rollout__", value: rollout })
+        }
+        if (enabledNotFound) {
+            tag.push({ key: "__enabled__", value: enabled })
+        }
     }, [rollout, version, enabled]);
 
     return (
