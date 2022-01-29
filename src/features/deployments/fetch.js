@@ -1,7 +1,9 @@
 
 import axios from "axios";
-import { version } from "react";
+
 import { fetchDataDone, setCurrentDeployment } from "./deploymentsSlice";
+
+console.log(axios);
 
 export function getRegisteredModels(dispatch) {
     axios.get(process.env.REACT_APP_MLFOW_API_SERVER + "/preview/mlflow/registered-models/list")
@@ -11,16 +13,17 @@ export function getRegisteredModels(dispatch) {
 }
 
 export function getModelVersions(dispatch, name) {
-    console.log(name)
-    axios.post(process.env.REACT_APP_MLFOW_API_SERVER + "/mlflow/registered-models/get-latest-versions", {
-        "name": name,
-        "stages": ["Production", "None", "Staging"],
-        method: "get"
-    }
-    ).then((res) => {
-        // console.log("Fetch - got versions for model: name=" + name, " data=" + JSON.stringify(res.data))
-        dispatch(setCurrentDeployment({ deployment: res.data, deploymentName: name }))
-    })
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+    fetch("http://model-repository.stg.dreamplug.net/ajax-api/2.0/preview/mlflow/model-versions/search?filter=name%3D%27" + name + "%27", requestOptions)
+        .then(response => response.text())
+        .then(result => dispatch(setCurrentDeployment({ deployment: JSON.parse(result), deploymentName: name })))
+        .catch(error => console.log('error', error));
 }
 
 
